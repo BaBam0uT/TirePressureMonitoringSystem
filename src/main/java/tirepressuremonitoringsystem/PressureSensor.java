@@ -21,4 +21,9 @@ public class PressureSensor implements Sensor {
      double pressureTelemetryValue = 6 * basicRandomNumbersGenerator.nextDouble() * basicRandomNumbersGenerator.nextDouble();
      return pressureTelemetryValue;
  }
+
+ public double probeValue() {
+	// TODO Auto-generated method stub
+	return 0;
+ }
 }

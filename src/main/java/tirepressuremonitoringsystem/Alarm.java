@@ -1,39 +1,34 @@
 package tirepressuremonitoringsystem;
 
 public class Alarm {
-	private final double lowPressureThreshold;
-	private final double highPressureThreshold;
+	private SafetyRange safetyRange;
+	private Sensor sensor;
+	private boolean alarmOn;
 
-	Sensor sensor;
-
-	boolean alarmOn;
-
-	public Alarm(Sensor sensor) {
+	public Alarm(Sensor sensor, SafetyRange safetyRange) {
 		this.sensor = sensor;
 		this.alarmOn = false;
-		this.lowPressureThreshold = 17;
-		this.highPressureThreshold = 21;
+		this.safetyRange = safetyRange;
 	}
 
 	public Alarm() {
-		this(new PressureSensor());
+		this(new PressureSensor(), new SafetyRange(17,21));
 	}
 
 	public void check() {
-		double psiPressureValue = probePsiPressureValue();
+		double value = probeValue();
 
-		if (isNotInSafetyRange(psiPressureValue)) {
+		if (isNotInSafetyRange(value)) {
 			activateAlarm();
 		}
 	}
 
-	private double probePsiPressureValue() {
-		double psiPressureValue = sensor.popNextPressurePsiValue();
-		return psiPressureValue;
+	private double probeValue() {
+		return sensor.probeValue();
 	}
 
-	private boolean isNotInSafetyRange(double psiPressureValue) {
-		return psiPressureValue < lowPressureThreshold || highPressureThreshold < psiPressureValue;
+	private boolean isNotInSafetyRange(double value) {
+		return safetyRange.doesNotContain(value);
 	}
 
 	private void activateAlarm() {

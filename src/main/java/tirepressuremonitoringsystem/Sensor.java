@@ -1,7 +1,5 @@
 package tirepressuremonitoringsystem;
 
 public interface Sensor {
-
-	double popNextPressurePsiValue();
-
+	double probeValue();
 }
